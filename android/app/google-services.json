@@ -1,0 +1,40 @@
+{
+  "project_info": {
+    "project_number": "202050388350",
+    "firebase_url": "https://electrokart-9651a.firebaseio.com",
+    "project_id": "electrokart-9651a",
+    "storage_bucket": "electrokart-9651a.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:202050388350:android:c3c20a9dd7bf3dca77732f",
+        "android_client_info": {
+          "package_name": "com.sukirti.project_tip"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "202050388350-hbd1g0s92uhllsc5fek2rc891bhd9pre.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyA_avPAOUHy8aeABwE6idsoZykmyNV4Q7Y"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "202050388350-hbd1g0s92uhllsc5fek2rc891bhd9pre.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
