@@ -56,7 +56,7 @@ class _CartState extends State<Cart> {
                     fontWeight: FontWeight.bold,
                   ),
                 ),
-                subtitle: Text('Rs. 6000',
+                subtitle: Text('Rs. 9750',
                   style: TextStyle(
                     fontSize: 14.0,
                     color: const Color(0xFF232F34),

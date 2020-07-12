@@ -1,6 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
+
 class CartProducts extends StatefulWidget {
   @override
   _CartProductsState createState() => _CartProductsState();
@@ -12,7 +13,7 @@ class _CartProductsState extends State<CartProducts> {
     {
     "name": "Laptop",
     "pic" : "assets/laptop3.png",
-    "price": 51000/DateTime.monthsPerYear,
+    "price": 48000/DateTime.monthsPerYear,
     "quantity": 5
     },
     {
@@ -22,9 +23,9 @@ class _CartProductsState extends State<CartProducts> {
     "quantity": 8
     },
     {
-      "name": "Headphone",
-      "pic" : "assets/headphone4.jpg",
-      "price": 12000/DateTime.monthsPerYear,
+      "name": "Camera Set",
+      "pic" : "assets/camera2.jpg",
+      "price": 60000/DateTime.monthsPerYear,
       "quantity": 10
     },
   ];
@@ -88,14 +89,14 @@ class _SingleCartProdState extends State<SingleCartProd> {
                   ],
                 ),
               ),
-              Padding(
-                padding: const EdgeInsets.only(right: 8.0,top:8.0,bottom: 8.0),
-                child: Row(
-                  children: <Widget>[
-                    Text('Quantity:  ''${widget.Cquantity}'),
-                  ],
-                ),
-              )
+//              Padding(
+//                padding: const EdgeInsets.only(right: 8.0,top:8.0,bottom: 8.0),
+//                child: Row(
+//                  children: <Widget>[
+//                    Text('Quantity:  ''${widget.Cquantity}'),
+//                  ],
+//                ),
+//              )
             ],
           ),
           trailing: Column(

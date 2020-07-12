@@ -3,6 +3,8 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:project_tip/pages/ProductDetails.dart';
+import 'package:project_tip/classes/ProductModel.dart';
+import 'package:project_tip/classes/ProductServices.dart';
 
 
 class FeaturedProd extends StatefulWidget {
@@ -12,37 +14,107 @@ class FeaturedProd extends StatefulWidget {
 
 class _FeaturedProdState extends State<FeaturedProd> {
 
-  final ref = FirebaseStorage.instance.ref().child('Product images/');
-
+  var name;
+  var price;
+  var brand;
+  var image;
 
   @override
   Widget build(BuildContext context) {
+
+//    return StreamBuilder(
+//        stream: Firestore.instance.collection('Products').snapshots(),
+//        builder: (context, AsyncSnapshot snapshot) {
+//          if (snapshot.hasData) {
+//            List product_list = [];
+//            for (int i = 0; i < snapshot.data.documents.length; i++) {
+//              DocumentSnapshot snap = snapshot.data.documents[i];
+//              product_list.add({
+//                snap.data['Product Name'],
+//                snap.data['Images'],
+//                snap.data['Price'].toString(),
+//                snap.data['Brand'],
+//              });
+//            }
+//          }else{return Text('No Data');}
+//        }
+//    );
+
+
     return StreamBuilder(
           stream: Firestore.instance.collection('Products').where('featured', isEqualTo: true).snapshots(),
-          builder: (BuildContext context, AsyncSnapshot<QuerySnapshot> snapshot){
-            if(!snapshot.hasData) return Text('No data Available');
+          builder: (BuildContext context,  snapshot){
+            if(!snapshot.hasData) {return Text('No data Available');}
+            List product_list = [];
+            snapshot.data.documents.map((document){
+              product_list.add({
+                name = document['Product Name'],
+                price = document['Price'].toString(),
+                brand = document['Brand'],
+                image = document['Images'],
+
+              });
+            }).toList();
 
             return GridView.builder(
               itemCount: snapshot.data.documents.length,
               scrollDirection: Axis.horizontal,
               gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(crossAxisCount: 1, mainAxisSpacing: 5),
               itemBuilder: (BuildContext context, int index) {
-                return singleProd(
 
-                  name: snapshot.data.documents.map((
-                      document) {
-                    document['Product Name'];
-                  }).toList(),
-                  price: snapshot.data.documents
-                      .map((document) {
-                    document['Price'].toString();
-                  }).toList(),
-                  brand: snapshot.data.documents
-                      .map((document) {
-                    document['Brand'];
-                  }).toList(),
-                  image: ref.getDownloadURL(),
+                return Padding(
+                  padding: const EdgeInsets.all(5.0),
+                  child: Card(
+                    child: Material(
+                      child: InkWell(
+                        onTap: () {
+                          Navigator.push(
+                              context, new MaterialPageRoute(
+                              builder: (BuildContext context) =>
+                                  ProductDetails( // passing values of the prod to product detail page
+                                      prod_name: name,
+                                      prod_price: price,
+                                      prod_brand: brand,
+                                      prod_image: image
+                                  )));
+                        },
+                        child: GridTile(
+                          footer: Container(
+                            color: const Color(0xBFFFFFFF),
+                            child: Padding(
+                              padding: const EdgeInsets.all(10.0),
+                              child: Row(
+                                mainAxisAlignment: MainAxisAlignment
+                                    .spaceBetween,
+                                children: <Widget>[
+                                  Expanded(
+                                    child: Text(name,
+                                      style: TextStyle(
+                                        fontWeight: FontWeight.bold,
+                                      ),
+                                    ),
+                                  ),
+                                  Text("Rate: ""$price",
+                                    style: TextStyle(
+                                      fontWeight: FontWeight.bold,
+                                      fontSize: 13.0,
+                                      color: Colors.red[900],
+                                    ),
+                                  ),
+                                ],
+                              ),
+                            ),
+                          ),
+
+                          child: Image.network(image,
+                            fit: BoxFit.cover,
+                          ),
+                        ),
+                      ),
+                    ),
+                  ),
                 );
+
               }
                 );
               },
@@ -130,7 +202,7 @@ class _FeaturedProdState extends State<FeaturedProd> {
             ),
           ),
         ),
-      );;
+      );
     }
   }
 

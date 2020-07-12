@@ -15,7 +15,7 @@ class UserManagement {
       stream: FirebaseAuth.instance.onAuthStateChanged,
       builder: (BuildContext context, snapshot){
         if(snapshot.hasData){
-          return Homepage();
+          return authorizeAccess(context);
           }else {
           return Login();
         }
@@ -39,8 +39,7 @@ class UserManagement {
             Navigator.pushReplacement(
                 context, new MaterialPageRoute(
                     builder: (BuildContext context) => new VendorHome()));
-
-          } else if(docs.documents[0].data['Role'] == 'User'){
+          } else if(docs.documents[0].data['Role'] == 'Customer'){
             Navigator.pushReplacement(
                 context, new MaterialPageRoute(
                     builder: (BuildContext context) => new Homepage()));

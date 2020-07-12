@@ -119,7 +119,7 @@ class _AddProductState extends State<AddProduct> {
                             return 'Enter Brand Name';
                           };
                           if (val.length <= 2) {
-                            return 'Product Name should be more than 2 chars';
+                            return 'Brand Name should be more than 2 chars';
                           }
                         },
                         decoration: InputDecoration(
@@ -265,7 +265,6 @@ class _AddProductState extends State<AddProduct> {
                     ),
 
 
-
                     //============Add button============
 
                     Padding(
@@ -326,9 +325,9 @@ class _AddProductState extends State<AddProduct> {
           ImgUrl1 = await snapshot1.ref.getDownloadURL();
 //          ImgUrl2 = await snapshot2.ref.getDownloadURL();
 //          ImgUrl3 = await snapshot3.ref.getDownloadURL();
-          List<String> imgList = [ImgUrl1,
+//          List<String> imgList = [ImgUrl1,
 //            ImgUrl2, ImgUrl3
-          ];
+//          ];
 
 
           DocumentReference docRef = Firestore.instance.collection('Products').document();
@@ -340,7 +339,7 @@ class _AddProductState extends State<AddProduct> {
             'Quantity': int.parse(quantityController.text),
             'Product Description': descriptionController.text,
             'Uid': user.uid,
-            'Images': imgList,
+            'Images': ImgUrl1,
             'sale':onSale,
             'featured':featured,
             'Category': Firestore.instance

@@ -1,6 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:project_tip/classes/FeaturedProduct.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:project_tip/classes/Product_class.dart';
 import 'package:project_tip/pages/Home_Page.dart';
 import 'package:project_tip/pages/Shopping_cart.dart';
@@ -173,6 +173,7 @@ class _ProductDetailsState extends State<ProductDetails> {
                           iconSize: 30.0,
                           color: const Color(0xFFF9AA33),
                           onPressed: (){
+                            Fluttertoast.showToast(msg: 'Product added to cart');
                           },
                         ),
                       ),

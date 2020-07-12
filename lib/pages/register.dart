@@ -21,7 +21,7 @@ class _RegisterState extends State<Register> {
   String _name;
   String _role;
   final _formKey = GlobalKey<FormState>();
-  final List<String> role = ['User', 'Vendor'];
+  final List<String> role = ['Customer', 'Vendor'];
 
 
   @override
@@ -332,7 +332,8 @@ class _RegisterState extends State<Register> {
         try{
           FirebaseUser user = (await FirebaseAuth.instance.createUserWithEmailAndPassword(
               email: _emailController.text, password: _passwordController.text)).user;
-          Firestore.instance.collection('Users').document().setData(
+
+          Firestore.instance.collection('Users').document(user.uid).setData(
               {
                 'Uid': user.uid,
                 'Email Id': _emailController.text,

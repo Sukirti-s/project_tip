@@ -3,38 +3,38 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:project_tip/pages/ProductDetails.dart';
 
-class Products extends StatefulWidget {
+class SaleProducts extends StatefulWidget {
   @override
-  _ProductsState createState() => _ProductsState();
+  _SaleProductsState createState() => _SaleProductsState();
 }
 
-class _ProductsState extends State<Products> {
+class _SaleProductsState extends State<SaleProducts> {
 
 
   var product_list = [
     {
       "name": "Laptop",
-      "pic" : "assets/laptop2.jpg",
-      "price": 51000/DateTime.monthsPerYear,
-      "old_price": 57000/DateTime.monthsPerYear
+      "pic" : "assets/laptop3.png",
+      "price": 48000/DateTime.monthsPerYear,
+      "old_price": 54000/DateTime.monthsPerYear
     },
     {
       "name": "Headphone",
-      "pic" : "assets/headphone1.jpg",
-      "price": 9000/DateTime.monthsPerYear,
-      "old_price": 12000/DateTime.monthsPerYear
-    },
-    {
-      "name": "Headphone",
-      "pic" : "assets/headphone4.jpg",
-      "price": 9000/DateTime.monthsPerYear,
-      "old_price": 12000/DateTime.monthsPerYear
+      "pic" : "assets/headphone2.png",
+      "price": 6000/DateTime.monthsPerYear,
+      "old_price": 9000/DateTime.monthsPerYear
     },
     {
       "name": "Camera Set",
-      "pic" : "assets/camera3.jpg",
-      "price": 51000/DateTime.monthsPerYear,
-      "old_price": 57000/DateTime.monthsPerYear
+      "pic" : "assets/camera2.jpg",
+      "price": 60000/DateTime.monthsPerYear,
+      "old_price": 72000/DateTime.monthsPerYear
+    },
+    {
+      "name": "Speaker",
+      "pic" : "assets/speaker1.jpg",
+      "price": 3000/DateTime.monthsPerYear,
+      "old_price": 6000/DateTime.monthsPerYear
     },
   ];
 
@@ -43,16 +43,16 @@ class _ProductsState extends State<Products> {
 
     return GridView.builder(
       itemCount: product_list.length,
-        scrollDirection: Axis.horizontal,
-        gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(crossAxisCount: 1, mainAxisSpacing: 5),
-        itemBuilder: (BuildContext context, int index){
-          return singleProd(
-            name: product_list[index]['name'],
-            pic: product_list[index]['pic'],
-            price: product_list[index]['price'],
-            oldprice: product_list[index]['old_price'],
-          );
-        },
+      scrollDirection: Axis.horizontal,
+      gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(crossAxisCount: 1, mainAxisSpacing: 5),
+      itemBuilder: (BuildContext context, int index){
+        return singleProd(
+          name: product_list[index]['name'],
+          pic: product_list[index]['pic'],
+          price: product_list[index]['price'],
+          oldprice: product_list[index]['old_price'],
+        );
+      },
     );
   }
 }
@@ -68,7 +68,7 @@ class singleProd extends StatelessWidget {
     this.pic,
     this.price,
     this.oldprice,
-});
+  });
   @override
   Widget build(BuildContext context) {
     return Padding(
@@ -95,10 +95,10 @@ class singleProd extends StatelessWidget {
 
 
                 child: ClipRRect(
-                    borderRadius: BorderRadius.circular(15),
+                  borderRadius: BorderRadius.circular(15),
                   child: GridTile(
                     footer: Container(
-                        color: const Color(0xBFFFFFFF),
+                      color: const Color(0xBFFFFFFF),
                       child: Padding(
                         padding: const EdgeInsets.all(10.0),
                         child: Row(
@@ -106,25 +106,33 @@ class singleProd extends StatelessWidget {
                           children: <Widget>[
                             Expanded(
                               child: Text(name,
-                                  style: TextStyle(
+                                style: TextStyle(
                                   fontWeight: FontWeight.bold,
                                 ),
                               ),
                             ),
-                            Text("Rate: ""$price",
-                                  style: TextStyle(
-                                    fontWeight: FontWeight.bold,
-                                    fontSize: 13.0,
-                                    color: Colors.red[900],
-                                  ),
-                                ),
-                              ],
+//                            Text("Rate: ""$oldprice",
+//                              style: TextStyle(
+//                                fontWeight: FontWeight.bold,
+//                                fontSize: 13.0,
+//                                color: Colors.black,
+//                                  decoration: TextDecoration.lineThrough
+//                              ),
+//                            ),
+                            Text("Sale Price: ""$price",
+                              style: TextStyle(
+                                fontWeight: FontWeight.bold,
+                                fontSize: 13.0,
+                                color: Colors.red[900],
+                              ),
                             ),
-                          ),
+                          ],
                         ),
+                      ),
+                    ),
 
                     child: Image.asset(pic,
-                    fit: BoxFit.cover,
+                      fit: BoxFit.cover,
                     ),
                   ),
                 ),

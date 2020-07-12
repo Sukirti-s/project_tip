@@ -1,12 +1,15 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:carousel_pro/carousel_pro.dart';
-import 'package:project_tip/classes/Cart_Products.dart';
 import 'package:project_tip/classes/FeaturedProduct.dart';
+import 'package:project_tip/classes/ProductProvider.dart';
 import 'package:project_tip/classes/Product_class.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:project_tip/classes/SaleProd_class.dart';
+import 'package:project_tip/classes/SaleProduct.dart';
 import 'package:project_tip/pages/Categories.dart';
+import 'package:project_tip/pages/ManageAddress.dart';
 import 'package:project_tip/pages/Shopping_cart.dart';
 import 'package:provider/provider.dart';
 
@@ -19,7 +22,23 @@ class Homepage extends StatefulWidget {
 
 class _HomepageState extends State<Homepage> {
 
-@override
+  final FirebaseAuth _auth = FirebaseAuth.instance;
+  FirebaseUser user;
+
+  @override
+  void initState() {
+    super.initState();
+    initUser();
+  }
+
+  Future<String> initUser() async {
+    user = await _auth.currentUser();
+    setState(() {});
+//    return user.uid;
+  }
+
+
+  @override
   Widget build(BuildContext context) {
 
 
@@ -89,19 +108,46 @@ class _HomepageState extends State<Homepage> {
           children: <Widget>[
 
             //=============drawer header=============
-            UserAccountsDrawerHeader(
-              accountName: Text('Sukirti'),
-              accountEmail: Text('sukirti1998@gmail.com'),
-              currentAccountPicture: GestureDetector(
-                child: CircleAvatar(
-                  child: Image.asset('assets/human.png'),
-                  backgroundColor: Colors.white,
-                ),
-              ),
-              decoration: BoxDecoration(
-                  color: const Color(0xFF232F34),
-              ),
-            ),
+
+            StreamBuilder<QuerySnapshot>(
+              stream: Firestore.instance.collection('Users').where('Uid', isEqualTo: user.uid).snapshots(),
+                builder: (BuildContext context, snapshot){
+
+                  if(snapshot.hasData){
+                    return
+                      UserAccountsDrawerHeader(
+                        accountName: Text(snapshot.data.documents[0].data['Name']),
+                        accountEmail: Text(snapshot.data.documents[0].data['Email Id']),
+                        currentAccountPicture: GestureDetector(
+                          child: CircleAvatar(
+                            child: Image.asset('assets/human.png'),
+                            backgroundColor: Colors.white,
+                          ),
+                        ),
+                        decoration: BoxDecoration(
+                          color: const Color(0xFF232F34),
+                        ),
+                      );
+                    }
+                  else{
+                    return Text('No data Available');
+                  }
+                  }),
+
+
+//          UserAccountsDrawerHeader(
+//            accountName: Text("${user.displayName}"),
+//            accountEmail: Text("${user.email}"),
+//            currentAccountPicture: GestureDetector(
+//              child: CircleAvatar(
+//                child: Image.asset('assets/human.png'),
+//                backgroundColor: Colors.white,
+//              ),
+//            ),
+//            decoration: BoxDecoration(
+//              color: const Color(0xFF232F34),
+//            ),
+//          ),
 
             //============drawer body============
             ListTile(
@@ -144,9 +190,13 @@ class _HomepageState extends State<Homepage> {
             ),
 
             ListTile(
-              title: Text('My Orders', style: TextStyle(fontSize: 17.0)),
-              leading: Icon(Icons.shopping_basket, color: const Color(0xFFF9AA33), size: 25.0,),
-              onTap: (){},
+              title: Text('Manage Address', style: TextStyle(fontSize: 17.0)),
+              leading: Icon(Icons.contact_mail, color: const Color(0xFFF9AA33), size: 25.0,),
+              onTap: (){
+                Navigator.push(
+                    context, new MaterialPageRoute(
+                    builder: (BuildContext context) => new ManageAddress()));
+              },
             ),
 
             Divider(),
@@ -291,7 +341,11 @@ class _HomepageState extends State<Homepage> {
                   children: <Widget>[
                     Padding(padding: EdgeInsets.only(right: 10.0),
                       child: InkWell(
-                        onTap: (){},
+                        onTap: (){
+                          Navigator.push(
+                              context, new MaterialPageRoute(
+                              builder: (BuildContext context) => new DisplayCategory()));
+                        },
                         child: Text('View all',
                           style: TextStyle(
                             color: const Color(0xFF000000),
@@ -349,16 +403,15 @@ class _HomepageState extends State<Homepage> {
                 ),
               ),
 
+              Padding(
+                padding: const EdgeInsets.all(8.0),
+                child: Container(
+                  height: 200,
+                  child: SaleProducts(),
+                ),
+              ),
 
-//              Padding(
-//                padding: const EdgeInsets.all(8.0),
-//                child: Container(
-//                  height: 250,
-//                  child: CartProducts(),
-//                ),
-//              ),
-//
-//              SizedBox(height: 100.0,)
+              SizedBox(height: 100,)
             ],
           ),
         ),
@@ -371,8 +424,9 @@ class _HomepageState extends State<Homepage> {
 
 class DataSearch extends SearchDelegate<String>{
 
+
   final nosugg = ['Camera'];
-  final products = ['Camera Lenses','Laptops','Desktop','Camera'] ;
+
 
   @override
   List<Widget> buildActions(BuildContext context) {
@@ -409,18 +463,44 @@ class DataSearch extends SearchDelegate<String>{
   @override
   Widget buildResults(BuildContext context) {
     // show result based on suggestion selection
+    return Container();
   }
 
   @override
   Widget buildSuggestions(BuildContext context) {
     // show search suggestions
-    final suggestionList = query.isEmpty? nosugg: products.where((p) => p.startsWith(query)).toList();
-    return ListView.builder(itemBuilder: (context,index) => ListTile(
-      leading: Icon(Icons.widgets, size: 15.0,),
-      title: Text(suggestionList[index]),
-    ),
-      itemCount: suggestionList.length,
+    return StreamBuilder(
+      stream: Firestore.instance.collection('Categories').snapshots(),
+        builder: (context, AsyncSnapshot snapshot){
+        if(snapshot.hasData){
+          List categoryItems= [];
+          for(int i=0; i<snapshot.data.documents.length; i++){
+            DocumentSnapshot snap = snapshot.data.documents[i];
+            categoryItems.add(
+                snap.data['Category Name'],
+            );
+          }
+
+//    snapshot.data.documents.map((document){
+//        categoryItems.add(
+//            document['Category Name']
+//        );
+//      }).toList();
+
+
+    final suggestionList = query.isEmpty? nosugg: categoryItems.where((p) => p.startsWith(query)).toList();
+          return ListView.builder(itemBuilder: (context,index) => ListTile(
+            leading: Icon(Icons.widgets, size: 15.0,),
+            title: Text(suggestionList[index]),
+          ),
+            itemCount: suggestionList.length,
+          );
+        }else{
+          return Text('No Data');
+        }
+        }
     );
+
   }
 
 }

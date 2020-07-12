@@ -1,6 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:project_tip/Admin/AdminHome.dart';
 
 
@@ -33,9 +34,7 @@ class _DeleteCategoryState extends State<DeleteCategory> {
                 size: 20.0,
               ),
               onPressed: () {
-                Navigator.pushReplacement(
-                    context, new MaterialPageRoute(
-                    builder: (BuildContext context) => new AdminHome()));
+                Navigator.pop(context);
               }),
         ],
       ),
@@ -49,7 +48,6 @@ class _DeleteCategoryState extends State<DeleteCategory> {
             return Container(
               color: const Color(0x1A232F34),
               child: ListView(
-
                 children: snapshot.data.documents.map((document){
                   return Padding(
                     padding: const EdgeInsets.all(5.0),
@@ -70,11 +68,14 @@ class _DeleteCategoryState extends State<DeleteCategory> {
                           Padding(
                             padding: const EdgeInsets.all(8.0),
                             child: IconButton(
-                              icon: Icon(Icons.delete_forever),
+                              icon: Icon(Icons.delete_outline),
                               color: const Color(0xFFF9AA33),
-                              onPressed: (){},
+                              onPressed: (){
+                                Firestore.instance.collection('Categories').document(document['Cid']).delete();
+                                Fluttertoast.showToast(msg: 'Category Deleted');
+                              },
                             ),
-                          )
+                          ),
                         ],
                       ),
                     ),

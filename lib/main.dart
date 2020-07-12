@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:project_tip/Admin/AdminHome.dart';
 import 'package:project_tip/Vendor/VendorHome.dart';
-import 'package:project_tip/classes/CheckRole.dart';
+
 
 //page imports
 import 'package:project_tip/pages/login.dart';
@@ -34,10 +34,11 @@ class _MyAppState extends State<MyApp> {
       },
 
       home:
+//      UserManagement().handleAuth(),
 //        Homepage()
-//        Login()
+        Login()
 //        VendorHome()
-        AdminHome()
+//        AdminHome()
     );
   }
 }
