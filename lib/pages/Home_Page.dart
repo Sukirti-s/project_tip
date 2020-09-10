@@ -392,7 +392,7 @@ class _HomepageState extends State<Homepage> {
               Divider(color: const Color(0xB3344955),indent: 10.0,endIndent: 10.0,),
               Container(
                 child: Padding(padding: EdgeInsets.all(10.0),
-                  child: Text('Top Deals',
+                  child: Text('Hot Deals',
                     style: TextStyle(
                       color: const Color(0xFF000000),
                       fontSize: 15.0,
